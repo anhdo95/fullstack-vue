@@ -1,5 +1,5 @@
 <template>
-  <div class="day column">
+  <div class="day column" @click="handleDayClick">
     <div class="day-banner has-text-white has-text-centered">{{ abbvTitle }}</div>
     <div class="day-details">
       <div class="day-number">{{ id }}</div>
@@ -17,6 +17,11 @@ import CalendarEvent from "@/components/CalendarEvent";
 export default {
   name: "CalendarDay",
   props: ['abbvTitle', 'events', 'id'],
+  methods: {
+    handleDayClick() {
+      this.$store.commit('setActiveDay', { dayId: this.id })
+    }
+  },
   components: {
     CalendarEvent
   }

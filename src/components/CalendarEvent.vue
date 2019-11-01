@@ -12,7 +12,7 @@
 
 <script>
 export default {
-  props: ['details', 'edit'],
+  props: ['dayId', 'details', 'edit'],
   name: "CalendarEvent",
   computed: {
     randomBgColor() {
@@ -22,7 +22,7 @@ export default {
 
       return { backgroundColor: randomColor }
     }
-  }
+  },
 };
 </script>
 
