@@ -1,10 +1,16 @@
 <template>
   <div class="day-event" :style="randomBgColor">
-    <div>
-      <span class="has-text-centered details">{{ details }}</span>
+    <div v-if="!edit">
+      <span class="has-text-centered details" >{{ details }}</span>
       <div class="has-text-centered icons">
-        <i class="fa fa-pencil-square edit-icon"></i>
-        <i class="fa fa-trash-o delete-icon"></i>
+        <i class="fa fa-pencil-square edit-icon" @click.stop="editEvent" />
+        <i class="fa fa-trash-o delete-icon" />
+      </div>
+    </div>
+    <div v-if="edit">
+      <input class="has-text-centered details" v-model="eventName" @keypress.enter="updateEvent">
+      <div class="has-text-centered icons">
+        <i class="fa fa-check confirm-icon" @click.stop="updateEvent" />
       </div>
     </div>
   </div>
@@ -14,6 +20,11 @@
 export default {
   props: ['dayId', 'details', 'edit'],
   name: "CalendarEvent",
+  data() {
+    return {
+      eventName: '',
+    }
+  },
   computed: {
     randomBgColor() {
       const colors = ['#FF9999', '#85D6FF', '#99FF99'];
@@ -21,6 +32,22 @@ export default {
       const randomColor = colors[Math.floor(Math.random() * colors.length)]
 
       return { backgroundColor: randomColor }
+    }
+  },
+  methods: {
+    editEvent() {
+      this.$store.commit('setEditEvent', {
+        dayId: this.dayId,
+        eventName: this.details
+      })
+
+      this.eventName = this.details
+    },
+    updateEvent() {
+      this.$store.commit('updateEvent', {
+        dayId: this.dayId,
+        eventName: this.eventName.trim()
+      })
     }
   },
 };

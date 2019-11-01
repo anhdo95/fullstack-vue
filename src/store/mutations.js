@@ -15,5 +15,23 @@ export default {
       details: eventName,
       edit: false
     });
+  },
+  setEditEvent(state, { dayId, eventName }) {
+    state.calendarDays.forEach(day => {
+      day.events.forEach(event => {
+        event.edit = (day.id === dayId) &&
+                     (event.details === eventName)
+      })
+    })
+  },
+  updateEvent(state, { dayId, eventName }) {
+    const day = state.calendarDays.find(day => day.id === dayId)
+    const editableEvent = day.events.find(event => event.edit)
+
+    if (eventName) {
+      editableEvent.details = eventName
+    }
+
+    editableEvent.edit = false
   }
 }
