@@ -1,12 +1,12 @@
 <template>
   <div id="calendar-entry">
     <div class="calendar-entry-note">
-      <input type="text" placeholder="New Event" />
+      <input type="text" placeholder="New Event" v-model="inputEntry" @keypress.enter="submitEvent" />
       <p class="calendar-entry-day">
         Day of event:
         <span class="bold">{{ activeDay.fullTitle }}</span>
       </p>
-      <a class="button is-primary is-small is-outlined">Submit</a>
+      <a class="button is-primary is-small is-outlined" @click="submitEvent">Submit</a>
     </div>
   </div>
 </template>
@@ -16,7 +16,25 @@ import { mapGetters } from 'vuex'
 
 export default {
   name: "CalendarEntry",
-  computed: mapGetters(['activeDay'])
+  data() {
+    return {
+      inputEntry: '',
+    }
+  },
+  computed: mapGetters(['activeDay']),
+  methods: {
+    submitEvent() {
+      if (!this.inputEntry.trim()) {
+        return void alert('Event name is invalid!')
+      }
+
+      this.$store.commit('addNewEvent', {
+        eventName: this.inputEntry.trim()
+      })
+
+      this.inputEntry = ''
+    }
+  }
 };
 </script>
 
