@@ -9,14 +9,14 @@
         :cartItem="cartItem"
       />
       <div class="cart-details">
-        <p>Total Quantity: <span class="has-text-weight-bold">2</span></p>
-        <p class="cart-remove-all--text">
+        <p>Total Quantity: <span class="has-text-weight-bold">{{ cartTotalQuantity }}</span></p>
+        <p class="cart-remove-all--text" @click="emptyCart">
           <i class="fa fa-trash"></i>Remove all
         </p>
       </div>
     </ul>
     <button class="button is-primary">
-      Checkout (<span class="has-text-weight-bold">$</span>)
+      Checkout (<span class="has-text-weight-bold">{{ cartTotalPrice }}$</span>)
     </button>
   </div>
 </template>
@@ -35,13 +35,16 @@ export default {
   },
   computed: {
     ...mapGetters({
-      cartItems: 'cartItems'
+      cartItems: 'cartItems',
+      cartTotalPrice: 'cartTotalPrice',
+      cartTotalQuantity: 'cartTotalQuantity',
     })
   },
   methods: {
     ...mapActions({
-      'getCartItems': 'getCartItems'
-    })
+      getCartItems: 'getCartItems',
+      emptyCart: 'emptyCart'
+    }),
   }
 }
 </script>

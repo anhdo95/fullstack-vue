@@ -3,8 +3,8 @@
     <div>
       <p class="cart-item--title is-inline">{{ cartItem.title }}</p>
       <div class="is-pulled-right">
-        <i class="fa fa-arrow-circle-up cart-item--modify"></i>
-        <i class="fa fa-arrow-circle-down cart-item--modify"></i>
+        <i class="fa fa-arrow-circle-up cart-item--modify" @click="addToCart({ cartItem })"></i>
+        <i class="fa fa-arrow-circle-down cart-item--modify" @click="removeFromCart({ cartItem })"></i>
       </div>
       <div class="cart-item--content">
         <span class="cart-item--price has-text-primary has-text-weight-bold">{{ cartItem.price }}$ each</span>
@@ -15,6 +15,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   name: "CartListItem",
   props: {
@@ -23,7 +25,13 @@ export default {
       required: true
     }
   },
-};
+  methods: {
+    ...mapActions({
+      addToCart: 'addToCart',
+      removeFromCart: 'removeFromCart',
+    }),
+  }
+}
 </script>
 
 <style scoped>
