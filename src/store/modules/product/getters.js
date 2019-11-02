@@ -1,10 +1,5 @@
 const getters = {
-  calendarDays(state) {
-    return state.calendarDays
-  },
-  activeDay(state) {
-    return state.calendarDays.find(day => day.active)
-  },
+  products: (state) => state.products
 }
 
 export default getters
