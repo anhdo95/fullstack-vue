@@ -1,5 +1,8 @@
+import axios from 'axios'
+
 export default {
-  addNewEvent(context, { eventName }) {
-    console.log(JSON.stringify(context.getters.activeDay, null, 2))
+  async getCartItems({ commit }) {
+    const res = await axios.get('/api/cart')
+    commit('UPDATE_CART_ITEMS', { cartItems: res.data })
   }
 }
