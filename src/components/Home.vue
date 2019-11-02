@@ -1,34 +1,48 @@
 <template>
-  <div>
-    <app-input :style="{ marginTop: '20px' }"
-      :message="message"
-      @onMessageChange="handleMessageChange"
-    >
-    </app-input>
-    <h4>{{ message }}</h4>
+  <div id="home">
+    <div class="container">
+      <div class="columns">
+        <div class="column is-3">
+          <CartList />
+        </div>
+        <div class="column is-9">
+          <ProductList />
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-export default {
-  name: 'Home',
-  props: {
+import CartList from './CartList';
+import ProductList from './ProductList';
 
-  },
-  data() {
-    return {
-      message: 'Default value'
-    }
-  },
-  methods: {
-    handleMessageChange(newMessage) {
-      this.message = newMessage
-    }
-  },
-}
+export default {
+  name: 'App',
+  components: {
+    CartList,
+    ProductList
+  }
+};
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style>
+html,
+body {
+  background: #f2f6fa;
+}
 
+#home {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media screen and (min-width: 769px) {
+  html,
+  body {
+    height: 100%;
+  }
+}
 </style>
