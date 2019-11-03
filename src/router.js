@@ -1,39 +1,53 @@
-import VueRouter from 'vue-router'
+import VueRouter from "vue-router";
 
-import Login from './components/Login.vue'
-import Users from './components/Users.vue'
-import ProductList from './components/ProductList.vue'
-import ProductDetail from './components/ProductDetail.vue'
-import CartList from './components/CartList.vue'
+import Login from "./components/Login.vue";
+import Users from "./components/Users.vue";
+import ProductList from "./components/ProductList.vue";
+import ProductDetail from "./components/ProductDetail.vue";
+import CartList from "./components/CartList.vue";
+import NotFound from "./components/NotFound.vue";
 
 const routes = [
-  { name: "login", path: '/login', component: Login },
-  { name: "users", path: '/users', component: Users },
-  { name: "products", path: '/products', component: ProductList },
-  { name: "product-detail", path: '/products/:id', component: ProductDetail, props: true },
-  { name: "cart", path: '/cart', component: CartList },
-  { name: "root", path: '/', redirect: '/login' },
   {
-    path: '*',
-    component: {
-      name: "NotFound",
-      template: `<p style="text-align: center">Page not found!. Please pick another one</p>`
+    name: "login",
+    path: "/login",
+    component: Login,
+    beforeEnter: (to, from, next) => {
+      if (localStorage.token) {
+        return next("/products")
+      }
+      next()
     }
   },
-]
-
-
-const router = new VueRouter({ routes, /* mode: 'history' */ })
-
-router.beforeEach((to, from , next) => {
-  const { token } = localStorage
-  if (!token && to.name !== 'login') {
-    return next('/login')
-  } else if (token && to.name === 'login') {
-    return next('/products')
+  { name: "users", path: "/users", component: Users },
+  { name: "products", path: "/products", component: ProductList },
+  {
+    name: "product-detail",
+    path: "/products/:id",
+    component: ProductDetail,
+    props: true,
+    beforeEnter: (to, from, next) => {
+      // const { id } = to.params
+      // TODO: find product by `id` and redirect to `not-found` as any product couldn't be found.
+      next()
+    }
+  },
+  { name: "cart", path: "/cart", component: CartList },
+  { name: "root", path: "/", redirect: "/products" },
+  { name: "not-found", path: "/not-found", component: NotFound },
+  {
+    path: "*",
+    component: NotFound
   }
+];
 
-  next()
-})
+const router = new VueRouter({ routes /* mode: 'history' */ });
 
-export default router
+router.beforeEach((to, from, next) => {
+  if (!localStorage.token && to.name !== "login") {
+    return next("/login");
+  }
+  next();
+});
+
+export default router;
