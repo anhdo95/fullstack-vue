@@ -1,15 +1,18 @@
 <template>
   <div id="app">
-    <div class="navigation-buttons">
+    <div class="navigation-buttons" v-if="$route.path !== '/login'">
       <div class="is-pulled-right">
-        <RouterLink to="/products" class="button">
-          <i class="fa fa-user-circle"></i>
-          <span>Shop</span>
-        </RouterLink>
-        <RouterLink to="/cart" class="button is-primary">
-          <i class="fa fa-shopping-cart"></i>
-          <span>{{ cartTotalQuantity }}</span>
-        </RouterLink>
+          <button @click="logout" class="button is-text is-pulled-left">
+            Logout
+          </button>
+          <RouterLink to="/products" class="button">
+            <i class="fa fa-user-circle"></i>
+            <span>Shop</span>
+          </RouterLink>
+          <RouterLink to="/cart" class="button is-primary">
+            <i class="fa fa-shopping-cart"></i>
+            <span>{{ cartTotalQuantity }}</span>
+          </RouterLink>
       </div>
     </div>
     <div class="container">
@@ -28,11 +31,16 @@ import { mapGetters, mapActions } from 'vuex'
 export default {
   name: "App",
   created() {
-    this.getProducts()
-    this.getCartItems()
+    this.updateInitialState(localStorage.token)
+  },
+  watch: {
+    token() {
+      this.updateInitialState(this.token)
+    }
   },
   computed: {
     ...mapGetters({
+      token: 'token',
       cartTotalQuantity: 'cartTotalQuantity',
     })
   },
@@ -40,7 +48,19 @@ export default {
     ...mapActions({
       getProducts: 'product/getProducts',
       getCartItems: 'getCartItems',
+      removeAuth: 'logout'
     }),
+    updateInitialState(token) {
+      if (token) {
+        this.$store.commit('SET_TOKEN', { token })
+        this.getProducts({ token })
+        this.getCartItems({ token })
+      }
+    },
+    async logout() {
+      await this.removeAuth()
+      this.$router.push('/login')
+    }
   }
 };
 </script>
