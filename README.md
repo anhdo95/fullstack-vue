@@ -1,4 +1,4 @@
-# vue2-webpack
+# fullstack-vue (VueJS, VueX, VueRouter, Mocha, Chai)
 
 ## Project setup
 ```
