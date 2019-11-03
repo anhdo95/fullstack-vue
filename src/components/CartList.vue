@@ -30,9 +30,6 @@ export default {
   components: {
     CartListItem
   },
-  created() {
-    this.getCartItems()
-  },
   computed: {
     ...mapGetters({
       cartItems: 'cartItems',
@@ -42,7 +39,6 @@ export default {
   },
   methods: {
     ...mapActions({
-      getCartItems: 'getCartItems',
       emptyCart: 'emptyCart'
     }),
   }

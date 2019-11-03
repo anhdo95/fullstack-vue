@@ -2,7 +2,7 @@
   <div class="product-list--item">
     <div>
       <h2 class="has-text-weight-bold">
-        {{ product.title }}
+        <RouterLink :to="`/products/${product.id}`">{{ product.title }}</RouterLink>
         <span class="tag is-primary is-pulled-right has-text-white">Add to Cart</span>
       </h2>
       <p>

@@ -24,19 +24,11 @@ export default {
   components: {
     ProductListItem
   },
-  created() {
-    this.getProducts()
-  },
   computed: {
     ...mapGetters({
     products: 'product/products',
     }),
   },
-  methods: {
-    ...mapActions({
-      getProducts: 'product/getProducts'
-    })
-  }
 }
 </script>
 

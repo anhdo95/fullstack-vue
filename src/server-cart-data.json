@@ -1,16 +1,12 @@
 [
     {
         "id": 1,
-        "title": "The Fullstack Hoodie",
+        "title": "Fullstack Hoodie",
         "description": "Lightweight, breathable hoodie with the Fullstack Crest. Guaranteed to keep you looking fresh while warm.",
+        "product_type": "hoodies/jackets",
+        "image_tag": "hoodie.png",
+        "created_at": 2017,
         "price": 19.99,
-        "quantity": 5
-    },
-    {
-        "id": 100,
-        "title": "New product",
-        "description": "Lorem ipsum",
-        "price": 20.43,
-        "quantity": 2
+        "quantity": 7
     }
 ]
