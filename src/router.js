@@ -6,6 +6,7 @@ import ProductList from "./components/ProductList.vue";
 import ProductDetail from "./components/ProductDetail.vue";
 import CartList from "./components/CartList.vue";
 import NotFound from "./components/NotFound.vue";
+import AppTest from "./components/AppTest.vue";
 
 const routes = [
   {
@@ -19,6 +20,7 @@ const routes = [
       next()
     }
   },
+  { name: "app-test", path: "/app-test", component: AppTest },
   { name: "users", path: "/users", component: Users },
   { name: "products", path: "/products", component: ProductList },
   {
