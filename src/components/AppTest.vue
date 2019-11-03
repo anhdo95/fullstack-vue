@@ -23,7 +23,7 @@
                     placeholder="Add item..." value="" />
                 </div>
                 <button type="submit"
-                  class="ui button" :disabled="!item">Add</button>
+                  class="ui button add-item-btn" :disabled="!item">Add</button>
                 <span @click="removeAllItems"
                   class="ui label">Remove all</span>
               </form>
