@@ -25,7 +25,7 @@
                 <button type="submit"
                   class="ui button add-item-btn" :disabled="!item">Add</button>
                 <span @click="removeAllItems"
-                  class="ui label">Remove all</span>
+                  class="ui label remove-all">Remove all</span>
               </form>
             </th>
           </tr>

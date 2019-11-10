@@ -31,7 +31,7 @@ describe('AppTest.vue', () => {
     })
 
     it('Should render correct an `Remove all` button', () => {
-      expect(html).to.contains('<span class="ui label">Remove all</span>')
+      expect(html).to.contains('<span class="ui label remove-all">Remove all</span>')
     })
   })
 
@@ -100,6 +100,29 @@ describe('AppTest.vue', () => {
 
       it('Should disable the `Add` button', () => {
         expect(addItemButton.element.disabled).to.true
+      })
+    })
+  })
+
+  describe('The user clicks the `Remove all` label', () => {
+    let itemList,
+        removeAllLabel
+
+    const existingItems = [ 'Item #1', 'Item #2', 'Item #3' ]
+
+    beforeEach(() => {
+      itemList = wrapper.find('.item-list')
+      removeAllLabel = wrapper.find('.remove-all')
+
+      wrapper.setData({ items: existingItems })
+      removeAllLabel.trigger('click')
+    })
+
+    it('Should remove all items from the `items` data property', () => {
+      expect(vm.items).to.deep.equal([])
+
+      existingItems.forEach(item => {
+        expect(itemList.html()).to.not.contain(`<td>${item}</td>`)
       })
     })
   })
