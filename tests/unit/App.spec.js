@@ -46,10 +46,13 @@ describe('AppTest.vue', () => {
   })
 
   describe('The user populates the text input field', () => {
-    let inputField
+    let inputField,
+        addItemButton
 
     beforeEach(() => {
       inputField = wrapper.find('.prompt')
+      addItemButton = wrapper.find('.add-item-btn')
+
       inputField.element.value = 'New item'
       inputField.trigger('input')
     })
@@ -59,17 +62,43 @@ describe('AppTest.vue', () => {
     })
 
     it('Should enable the `Add` button when text input is populated', () => {
-      const addItemButton = wrapper.find('.add-item-btn')
       expect(addItemButton.element.disabled).to.false
     })
 
     describe('And then clears the input data', () => {
       it('Should disable the `Add` button', () => {
-        const addItemButton = wrapper.find('.add-item-btn')
-
         inputField.element.value = ''
         inputField.trigger('input')
 
+        expect(addItemButton.element.disabled).to.true
+      })
+    })
+
+    describe('And then submits the form', () => {
+      let addItemButton,
+          itemList,
+          inputField
+
+      beforeEach(() => {
+        addItemButton = wrapper.find('.add-item-btn')
+        itemList = wrapper.find('.item-list')
+        inputField = wrapper.find('.prompt')
+
+        wrapper.setData({ item: 'New item' })
+        addItemButton.trigger('submit')
+      })
+
+      it('Should add a new item to the `items` data property', () => {
+        expect(vm.items).to.deep.equal([ 'New item' ])
+        expect(itemList.html()).to.contain('<td>New item</td>')
+      })
+
+      it('Should set the `item` data property to a blank string', () => {
+        expect(vm.item).to.equal('')
+        expect(inputField.element.value).to.equal('')
+      })
+
+      it('Should disable the `Add` button', () => {
         expect(addItemButton.element.disabled).to.true
       })
     })
