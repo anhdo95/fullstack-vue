@@ -8,9 +8,7 @@
           :to="'/weather/' + city.id"
           :key="city.id"
           v-if="!loading"
-        >
-          {{ city.name }}
-        </router-link>
+        >{{ city.name }}</router-link>
       </template>
 
     </div>
