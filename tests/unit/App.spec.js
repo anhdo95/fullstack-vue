@@ -1,129 +1,35 @@
-import { shallowMount } from '@vue/test-utils';
+import Vuex from 'vuex'
+import { shallowMount, createLocalVue } from '@vue/test-utils';
 import { expect } from 'chai'
 
-import AppTest from '@/components/AppTest';
+import App from '@/App';
 
-describe('AppTest.vue', () => {
-  let wrapper, vm, html
+describe('App.vue', () => {
+  let wrapper, store, getters
 
-  describe('Should render correct contents', () => {
-    beforeEach(() => {
-      wrapper = shallowMount(AppTest)
-      vm = wrapper.vm
-      html = wrapper.html()
+  beforeEach(() => {
+    const localVue = createLocalVue()
+
+    localVue.use(Vuex)
+
+    store = new Vuex.Store({
+      getters
     })
 
-    it('Should render correct table header', () => {
-      expect(html).to.contains('<th>Items</th>')
-    })
+    getters = {
+      loading: () => false
+    }
 
-    it('Should render correct an `Input` field', () => {
-      expect(html).to.contains('<input type="text" placeholder="Add item..." value="" class="prompt">')
-    })
-
-    it('Should render correct an `Add` button', () => {
-      expect(html).to.contains('<button type="submit" disabled="disabled" class="ui button add-item-btn">Add</button>')
-    })
-
-    it('Should have an `Add` button disabled', () => {
-      const addItemButton = wrapper.find('.add-item-btn')
-      expect(addItemButton.element.disabled).to.true
-    })
-
-    it('Should render correct an `Remove all` button', () => {
-      expect(html).to.contains('<span class="ui label remove-all">Remove all</span>')
+    wrapper = shallowMount(App, {
+      localVue,
+      store,
+      stubs: [ 'router-view', 'router-link' ]
     })
   })
 
-  describe('Should set correct default data', () => {
-    it('Is `item` an empty string', () => {
-      expect(vm.item).to.equal('')
-    })
+  it("Should display current day's date", () => {
+    const formattedDate = new Date().toDateString()
 
-    it('Is `items` an empty of array', () => {
-      expect(vm.items).to.deep.equal([])
-    })
-  })
-
-  describe('The user populates the text input field', () => {
-    let inputField,
-        addItemButton
-
-    beforeEach(() => {
-      inputField = wrapper.find('.prompt')
-      addItemButton = wrapper.find('.add-item-btn')
-
-      inputField.element.value = 'New item'
-      inputField.trigger('input')
-    })
-
-    it('Should update the `text` data property', () => {
-      expect(vm.item).to.equal('New item')
-    })
-
-    it('Should enable the `Add` button when text input is populated', () => {
-      expect(addItemButton.element.disabled).to.false
-    })
-
-    describe('And then clears the input data', () => {
-      it('Should disable the `Add` button', () => {
-        inputField.element.value = ''
-        inputField.trigger('input')
-
-        expect(addItemButton.element.disabled).to.true
-      })
-    })
-
-    describe('And then submits the form', () => {
-      let addItemButton,
-          itemList,
-          inputField
-
-      beforeEach(() => {
-        addItemButton = wrapper.find('.add-item-btn')
-        itemList = wrapper.find('.item-list')
-        inputField = wrapper.find('.prompt')
-
-        wrapper.setData({ item: 'New item' })
-        addItemButton.trigger('submit')
-      })
-
-      it('Should add a new item to the `items` data property', () => {
-        expect(vm.items).to.deep.equal([ 'New item' ])
-        expect(itemList.html()).to.contain('<td>New item</td>')
-      })
-
-      it('Should set the `item` data property to a blank string', () => {
-        expect(vm.item).to.equal('')
-        expect(inputField.element.value).to.equal('')
-      })
-
-      it('Should disable the `Add` button', () => {
-        expect(addItemButton.element.disabled).to.true
-      })
-    })
-  })
-
-  describe('The user clicks the `Remove all` label', () => {
-    let itemList,
-        removeAllLabel
-
-    const existingItems = [ 'Item #1', 'Item #2', 'Item #3' ]
-
-    beforeEach(() => {
-      itemList = wrapper.find('.item-list')
-      removeAllLabel = wrapper.find('.remove-all')
-
-      wrapper.setData({ items: existingItems })
-      removeAllLabel.trigger('click')
-    })
-
-    it('Should remove all items from the `items` data property', () => {
-      expect(vm.items).to.deep.equal([])
-
-      existingItems.forEach(item => {
-        expect(itemList.html()).to.not.contain(`<td>${item}</td>`)
-      })
-    })
+    expect(wrapper.html()).to.contain(formattedDate)
   })
 })
