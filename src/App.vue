@@ -1,103 +1,83 @@
 <template>
-  <div id="app">
-    <div class="navigation-buttons" v-if="$route.path !== '/login'">
-      <div class="is-pulled-right">
-          <button @click="logout" class="button is-text is-pulled-left">
-            Logout
-          </button>
-          <RouterLink to="/products" class="button">
-            <i class="fa fa-user-circle"></i>
-            <span>Shop</span>
-          </RouterLink>
-          <RouterLink to="/cart" class="button is-primary">
-            <i class="fa fa-shopping-cart"></i>
-            <span>{{ cartTotalQuantity }}</span>
-          </RouterLink>
-      </div>
-    </div>
-    <div class="container">
-      <div class="columns">
-        <div class="column is-6 column--align-center">
-          <RouterView></RouterView>
-        </div>
-      </div>
+  <div id="app" class="flex-align has-text-centered">
+    <p class="app__date has-text-weight-bold">{{ date }}</p>
+    <router-view></router-view>
+    <div class="app__cities">
+      <template v-for="city in cities">
+         <router-link
+          :to="'/weather/' + city.id"
+          :key="city.id"
+          v-if="!loading"
+        >
+          {{ city.name }}
+        </router-link>
+      </template>
+
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex';
 
 export default {
-  name: "App",
-  created() {
-    this.updateInitialState(localStorage.token)
-  },
-  watch: {
-    token() {
-      this.updateInitialState(this.token)
+  name: 'app',
+  data() {
+    return {
+      cities: [
+        { id: 2459115, name: 'New York City, New York' },
+        { id: 468739, name: 'Buenos Aires, Argentina' },
+        { id: 2122265, name: 'Moscow, Russia' },
+        { id: 1118370, name: 'Tokyo, Japan' },
+        { id: 1105779, name: 'Sydney, Australia' },
+        { id: 1398823, name: 'Lagos, Nigeria' }
+      ]
     }
   },
   computed: {
-    ...mapGetters({
-      token: 'token',
-      cartTotalQuantity: 'cartTotalQuantity',
-    })
-  },
-  methods: {
-    ...mapActions({
-      getProducts: 'product/getProducts',
-      getCartItems: 'getCartItems',
-      removeAuth: 'logout'
-    }),
-    updateInitialState(token) {
-      if (token) {
-        this.$store.commit('SET_TOKEN', { token })
-        this.getProducts({ token })
-        this.getCartItems({ token })
-      }
+    date() {
+      return (new Date()).toDateString();
     },
-    async logout() {
-      await this.removeAuth()
-      this.$router.push('/login')
-    }
-  }
-};
+    ...mapGetters([
+      'loading'
+    ])
+  },
+}
 </script>
 
 <style>
 html, body {
   height: 100%;
-  background: #F2F6FA;
 }
 
 #app {
   height: 100%;
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+}
+
+#app.flex-align {
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
 }
 
-.container {
-  width: 100%;
-}
-
-.column--align-center {
-  margin: 0 auto;
-}
-
-.navigation-buttons {
+.app__date {
   position: absolute;
-  top: 5px;
-  width: 99%;
-  z-index: 99;
+  top: 10px;
+  right: 10px;
 }
 
-.navigation-buttons .button {
-  margin: 0 2px;
+.app__cities {
+  position: absolute;
+  bottom: 40px;
 }
 
-.navigation-buttons .button .fa {
-  padding-right: 5px;
+.app__cities a {
+  color: #42b983;
+  padding: 0 10px;
 }
 </style>

@@ -1,55 +1,45 @@
-import VueRouter from "vue-router";
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+import HomeContainer from './components/HomeContainer.vue';
+import WeatherContainer from './components/WeatherContainer.vue';
+import NotFoundContainer from './components/NotFoundContainer.vue';
 
-import Login from "./components/Login.vue";
-import Users from "./components/Users.vue";
-import ProductList from "./components/ProductList.vue";
-import ProductDetail from "./components/ProductDetail.vue";
-import CartList from "./components/CartList.vue";
-import NotFound from "./components/NotFound.vue";
-import AppTest from "./components/AppTest.vue";
+Vue.use(VueRouter);
 
-const routes = [
-  {
-    name: "login",
-    path: "/login",
-    component: Login,
-    beforeEnter: (to, from, next) => {
-      if (localStorage.token) {
-        return next("/products")
+const router = new VueRouter({
+  mode: 'history',
+  routes: [
+    {
+      path: '/',
+      component: HomeContainer
+    },
+    {
+      path: '/weather/:id',
+      component: WeatherContainer,
+      props: true,
+      beforeEnter: (to, from, next) => {
+        const id = to.params.id;
+        if (
+          ![
+            2459115,
+            468739,
+            2122265,
+            1118370,
+            1105779,
+            1398823
+          ].includes(Number(id))
+        ) {
+          next("/not-found");
+        } else {
+          next();
+        }
       }
-      next()
+    },
+    {
+      path: '*',
+      component: NotFoundContainer
     }
-  },
-  { name: "app-test", path: "/app-test", component: AppTest },
-  { name: "users", path: "/users", component: Users },
-  { name: "products", path: "/products", component: ProductList },
-  {
-    name: "product-detail",
-    path: "/products/:id",
-    component: ProductDetail,
-    props: true,
-    beforeEnter: (to, from, next) => {
-      // const { id } = to.params
-      // TODO: find product by `id` and redirect to `not-found` as any product couldn't be found.
-      next()
-    }
-  },
-  { name: "cart", path: "/cart", component: CartList },
-  { name: "root", path: "/", redirect: "/products" },
-  { name: "not-found", path: "/not-found", component: NotFound },
-  {
-    path: "*",
-    component: NotFound
-  }
-];
-
-const router = new VueRouter({ routes /* mode: 'history' */ });
-
-router.beforeEach((to, from, next) => {
-  if (!localStorage.token && to.name !== "login") {
-    return next("/login");
-  }
-  next();
+  ]
 });
 
 export default router;
