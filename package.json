@@ -8,7 +8,7 @@
     "server": "node src/server.js",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "test:watch": "vue-cli-service test:unit tests/unit/App.spec.js --watch",
+    "test:watch": "vue-cli-service test:unit tests/unit/components/WeatherContainer.spec.js --watch",
     "test": "vue-cli-service test:unit tests/unit/App.spec.js",
     "test:unit": "vue-cli-service test:unit"
   },
@@ -32,6 +32,7 @@
     "eslint-plugin-vue": "^5.0.0",
     "node-sass": "^4.13.0",
     "sass-loader": "^8.0.0",
+    "sinon": "^7.5.0",
     "vue-template-compiler": "^2.6.10"
   },
   "eslintConfig": {
@@ -41,7 +42,13 @@
     },
     "rules": {
       "no-console": "off",
-      "no-unused-vars": "warn"
+      "no-unused-vars": "warn",
+      "vue/no-use-v-if-with-v-for": [
+        "warn",
+        {
+          "allowUsingIterationVar": true
+        }
+      ]
     },
     "extends": [
       "plugin:vue/essential",

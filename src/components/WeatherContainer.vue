@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="!loading" class="weather container">
-      <img class="weather__image" :src="require(`../assets/${imageAbbr}`)" />
+      <img class="weather__image" :src="require(`@/assets/${imageAbbr}`)" />
       <h1 class="subtitle weather__city">{{ location }}</h1>
       <p class="weather__description">{{ weatherDescription }}</p>
       <p class="weather__temperature">{{ weatherTemp }} ºC</p>
