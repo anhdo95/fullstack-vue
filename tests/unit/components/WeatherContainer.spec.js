@@ -1,9 +1,12 @@
 import Vuex from 'vuex'
 import { shallowMount, createLocalVue } from '@vue/test-utils'
-import { expect } from 'chai'
+import chai, { expect } from 'chai'
 import sinon from 'sinon'
+import sinonChai from 'sinon-chai'
 
 import WeatherContainer from '@/components/WeatherContainer'
+
+chai.use(sinonChai)
 
 describe('WeatherContainer.vue', () => {
   let wrapper,
@@ -55,5 +58,20 @@ describe('WeatherContainer.vue', () => {
     expect(wrapper.html()).to.contain(`<h1 class="subtitle weather__city">${getters.location()}</h1>`)
     expect(wrapper.html()).to.contain(`<p class="weather__description">${getters.weatherDescription()}</p>`)
     expect(wrapper.html()).to.contain(`<p class="weather__temperature">${getters.weatherTemp()} ºC</p>`)
+  })
+
+  it('Should call the `fetchWeather` action once when created', () => {
+    setUpWrapper(false)
+
+    expect(actions.fetchWeather).to.have.been.calledOnce
+  })
+
+  it('Should also call the `fetchWeather` action when `id` is changed', () => {
+    setUpWrapper(false)
+
+    // wrapper.setData({ id: '1398823' })
+    wrapper.vm.$options.watch.id.call(wrapper.vm)
+
+    expect(actions.fetchWeather).to.have.been.calledTwice
   })
 })
